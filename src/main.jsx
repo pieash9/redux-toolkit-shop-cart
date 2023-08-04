@@ -1,10 +1,34 @@
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Cart from "./components/Cart.jsx";
+import Dashboard from "./components/Dashboard.jsx";
+import Layout from "./components/Layout.jsx";
+import Products from "./components/Poroducts";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
+      },
+    ],
+  },
+]);
 
-    <App />
-
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <RouterProvider router={router} />
+);

@@ -1,18 +1,41 @@
 import { useEffect, useState } from "react";
-
-import { Button, Card, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { add } from "../store/cartSlice";
+import { getProducts } from "../store/productSlice";
 
 function Products() {
-  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { data: products, status } = useSelector((state) => state.products);
+
+  const addToCart = (product) => {
+    // dispatch an add action
+    dispatch(add(product));
+  };
+
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products`)
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
+    // api
+    // dispatch an action for fetch  products
+    dispatch(getProducts());
+
+    // fetch(`https://fakestoreapi.com/products`)
+    //   .then((res) => res.json())
+    //   .then((data) => setProducts(data));
     setLoading(false);
   }, []);
-  if (loading) {
-    return <Spinner animation="border" variant="primary" />;
+
+  if (status == "loading") {
+    return (
+      <div className="d-flex justify-content-center">
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
+  }
+  if (status == "error") {
+    return (
+      <Alert key={"danger"} variant="danger" className="text-center">Something went wrong! Try again later.</Alert>
+    );
   }
   return (
     <div className=" gap-3">
@@ -33,7 +56,9 @@ function Products() {
                 <Card.Text>${product.price}</Card.Text>
               </Card.Body>
               <Card.Footer className="text-center">
-                <Button variant="primary">Add to cart</Button>
+                <Button onClick={() => addToCart(product)} variant="primary">
+                  Add to cart
+                </Button>
               </Card.Footer>
             </Card>
           </div>

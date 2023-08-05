@@ -7,6 +7,8 @@ import Cart from "./components/Cart.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import Layout from "./components/Layout.jsx";
 import Products from "./components/Poroducts";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 const router = createBrowserRouter([
   {
@@ -30,5 +32,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );
